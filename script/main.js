@@ -64,7 +64,7 @@ function getRandomBudget(min = 1555461, max = 987561784) {
     return randomBudget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-function getRandomDate(startDateStr = '1990, 1, 1', endDateStr = '2020, 11, 1') {
+function getRandomDate(startDateStr = '1990, 1, 1', endDateStr = '2020, 11, 31') {
     const startDate = new Date(startDateStr);
     const endDate = new Date(endDateStr);
     const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
@@ -84,3 +84,5 @@ function createRandomFilmCard() {
     };
     return randomFilmCard;
 };
+
+const filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard())
