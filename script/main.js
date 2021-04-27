@@ -1,16 +1,16 @@
 'use strict';
 
 const filmsTitles = [
-    'Зеленая миля / The Green Mile',
-    'Пеле: Рождение легенды / Pelé: Birth of a Legend',
-    'Законопослушный гражданин / Law Abiding Citizen',
-    'Вторая жизнь Уве / En man som heter Ove',
+    'Зеленая миля',
+    'Пеле: Рождение легенды',
+    'Законопослушный гражданин',
+    'Вторая жизнь Уве',
     'Бриллиантовая рука',
-    'Ford против Ferrari / Ford v Ferrari',
+    'Ford против Ferrari',
     'Джентльмены удачи',
-    'Константин: Повелитель тьмы / Constantine',
+    'Константин: Повелитель тьмы',
     'Операция «Ы» и другие приключения Шурика',
-    'Богемская рапсодия / Bohemian Rhapsody',
+    'Богемская рапсодия',
 ];
 
 const filmsDescriptions = [
@@ -68,7 +68,7 @@ function getRandomDate(startDateStr = '1990, 1, 1', endDateStr = '2020, 11, 31')
     const startDate = new Date(startDateStr);
     const endDate = new Date(endDateStr);
     const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
-    return `${`0${randomDate.getDate()}`.slice(-2)}-${`0${randomDate.getMonth()}`.slice(-2)}-${randomDate.getFullYear()}`;
+    return `${`0${randomDate.getDate()}`.slice(-2)}-${`0${randomDate.getMonth() + 1}`.slice(-2)}-${randomDate.getFullYear()}`;
 };
 
 function createRandomFilmCard() {
@@ -85,4 +85,41 @@ function createRandomFilmCard() {
     return randomFilmCard;
 };
 
-const filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard())
+const filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard());
+
+function generateFilmsList(filmsMockArr) {
+    const templateFilmCard = document.getElementById('card-template').content.querySelector('.card');
+    const filmsList = document.querySelector('.film-list');
+
+    filmsMockArr.forEach(film => {
+    const filmTitle = templateFilmCard.querySelector('.card-header__title');
+    const filmPoster = templateFilmCard.querySelector('.card-header__image');
+    const filmRating = templateFilmCard.querySelector('.film-info__rating .film-info__text');
+    const filmReleaseDate = templateFilmCard.querySelector('.film-info__release-date .film-info__text');
+    const filmDirector = templateFilmCard.querySelector('.film-info__director .film-info__text');
+    const filmBudget = templateFilmCard.querySelector('.film-info__box-office .film-info__text');
+    const filmDescription = templateFilmCard.querySelector('.film-info__plot .film-info__text');
+    const toFavoritsBtn = templateFilmCard.querySelector('.card__button');
+
+    filmTitle.innerText = film.title;
+    filmPoster.src = film.poster;
+    filmRating.innerText = film.rating;
+    filmReleaseDate.innerText = film.realeseDate;
+    filmDirector.innerText = film.director;
+    filmBudget.innerText = film.budget;
+    filmDescription.innerText = film.description.length <= 140 ? film.description : film.description.slice(0,137) + '...';
+
+    if (film.isFavorite) {
+        toFavoritsBtn.classList.remove('button_add');
+        toFavoritsBtn.classList.add('button_remove');
+    } else {
+        toFavoritsBtn.classList.remove('button_remove');
+        toFavoritsBtn.classList.add('button_add');
+    };
+
+    const currentFilmCard = templateFilmCard.cloneNode(true);
+    filmsList.appendChild(currentFilmCard);
+    });
+};
+
+generateFilmsList(filmsMockArr);
