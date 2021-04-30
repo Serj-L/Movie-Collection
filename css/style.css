@@ -46,6 +46,7 @@ body {
   font-family: "Roboto", "Arial", sans-serif;
   font-size: 16px;
   background-color: #f0f0ea;
+  min-height: 100vh;
 }
 
 fieldset {
@@ -63,12 +64,18 @@ h1 {
 /*
     film list
 */
-.film-list {
+.film-list,
+.favorits-film-list.active {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
   grid-gap: 0.75rem;
   justify-content: center;
 
+}
+
+.film-list.hidden,
+.favorits-film-list {
+  display: none;
 }
 
 /*
@@ -94,6 +101,10 @@ grid-template: auto 1fr auto auto / 1fr;
 .card__body {
   background-color: #fffff8;
   padding: 0.5rem 0.2rem;
+}
+
+.film-info__plot .film-info__text {
+  height: 170px;
 }
 
 .card__footer {
