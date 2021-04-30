@@ -150,7 +150,7 @@ sortingControlPanel.addEventListener('click', function(evt) {
         switch(evt.target.id) {
             case 'rating':
                 let sortByRatingList = Array.from(parentElement.children).sort((a, b) => {
-                    return getRating(a) - getRating(b);
+                    return  getRating(b) - getRating(a);
                 });
                 sortByRatingList.forEach(item => {
                     parentElement.appendChild(item);
@@ -161,7 +161,7 @@ sortingControlPanel.addEventListener('click', function(evt) {
             break;
             case 'releaseDate':
                 let sortByReleaseDateList = Array.from(parentElement.children).sort((a, b) => {
-                    return getRealeseDate(a) - getRealeseDate(b);
+                    return getRealeseDate(b) - getRealeseDate(a);
                 });
                 sortByReleaseDateList.forEach(item => {
                     parentElement.appendChild(item);
@@ -172,7 +172,7 @@ sortingControlPanel.addEventListener('click', function(evt) {
             break;
             case 'boxOffice':
                 let sortByBudgetList = Array.from(parentElement.children).sort((a, b) => {
-                    return getBudget(a) - getBudget(b);
+                    return getBudget(b) - getBudget(a);
                 });
                 sortByBudgetList.forEach(item => {
                     parentElement.appendChild(item);
