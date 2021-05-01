@@ -85,115 +85,109 @@ function createRandomFilmCard() {
     return randomFilmCard;
 };
 
-const filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard());
+const main = document.querySelector('main');
+const searchInput = document.querySelector('.search__input');
+const favoritsCheckBox = document.getElementById('favorite');
+const sortingBtns = document.querySelectorAll('.control-panel + .sorting > button');
+const templateFilmCard = document.getElementById('card-template').content.querySelector('.card');
+const filmsList = document.querySelector('.film-list');
+let filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard());
 
 function renderFilmsList(filmsMockArr) {
-    const templateFilmCard = document.getElementById('card-template').content.querySelector('.card');
-    const filmsList = document.querySelector('.film-list');
+
+    while (filmsList.lastChild) {
+        filmsList.removeChild(filmsList.lastChild);
+    };
 
     filmsMockArr.forEach(film => {
-    const filmTitle = templateFilmCard.querySelector('.card-header__title');
-    const filmPoster = templateFilmCard.querySelector('.card-header__image');
-    const filmRating = templateFilmCard.querySelector('.film-info__rating .film-info__text');
-    const filmReleaseDate = templateFilmCard.querySelector('.film-info__release-date .film-info__text');
-    const filmDirector = templateFilmCard.querySelector('.film-info__director .film-info__text');
-    const filmBudget = templateFilmCard.querySelector('.film-info__box-office .film-info__text');
-    const filmDescription = templateFilmCard.querySelector('.film-info__plot .film-info__text');
+        const filmTitle = templateFilmCard.querySelector('.card-header__title');
+        const filmPoster = templateFilmCard.querySelector('.card-header__image');
+        const filmRating = templateFilmCard.querySelector('.film-info__rating .film-info__text');
+        const filmReleaseDate = templateFilmCard.querySelector('.film-info__release-date .film-info__text');
+        const filmDirector = templateFilmCard.querySelector('.film-info__director .film-info__text');
+        const filmBudget = templateFilmCard.querySelector('.film-info__box-office .film-info__text');
+        const filmDescription = templateFilmCard.querySelector('.film-info__plot .film-info__text');
+        const toFavoritsBtn = templateFilmCard.querySelector('.card__button');
 
-    filmTitle.innerText = film.title === null ? '-' : film.title;
-    filmPoster.src = film.poster;
-    filmRating.innerText = film.rating === null ? '0.0' : film.rating;
-    filmReleaseDate.innerText = film.realeseDate === null ? '-' : film.realeseDate;
-    filmDirector.innerText = film.director === null ? '-' : film.director;
-    filmBudget.innerText = film.budget === null ? '$0' : film.budget;
-    filmDescription.innerText = film.description === null ? '-' : film.description.length <= 140 ? film.description : film.description.slice(0,137) + '...';
+        filmTitle.innerText = film.title === null ? '-' : film.title;
+        filmPoster.src = film.poster;
+        filmRating.innerText = film.rating === null ? '0.0' : film.rating;
+        filmReleaseDate.innerText = film.realeseDate === null ? '-' : film.realeseDate;
+        filmDirector.innerText = film.director === null ? '-' : film.director;
+        filmBudget.innerText = film.budget === null ? '$0' : film.budget;
+        filmDescription.innerText = film.description === null ? '-' : film.description.length <= 140 ? film.description : film.description.slice(0,137) + '...';
+        templateFilmCard.dataset.filmId = filmsMockArr.indexOf(film);
 
-    const currentFilmCard = templateFilmCard.cloneNode(true);
-    filmsList.appendChild(currentFilmCard);
+        toFavoritsBtn.classList.toggle('button_add', !film.isFavorite);
+        toFavoritsBtn.classList.toggle('button_remove', film.isFavorite);
+
+        const currentFilmCard = templateFilmCard.cloneNode(true);
+
+        switch(film.isFavorite) {
+            case true:
+                if(favoritsCheckBox.checked) {
+                    filmsList.appendChild(currentFilmCard);
+                };
+            break;
+            case false:
+                if(!favoritsCheckBox.checked) {
+                    filmsList.appendChild(currentFilmCard);
+                };
+            break;
+        }
     });
 };
 
 renderFilmsList(filmsMockArr);
 
-const searchInput = document.querySelector('.search__input');
-const favoritsFilter = document.querySelector('.filter');
-const favoritsCheckBox = document.getElementById('favorite');
-const sortingControlPanel = document.querySelector('.control-panel + .sorting');
-const sortingBtns = document.querySelectorAll('.control-panel + .sorting > button');
-const filmList = document.querySelector('.film-list');
-const favoritsFilmList = document.querySelector('.favorits-film-list');
-const filmCards = document.querySelectorAll('.card');
-const filmsRelease = document.querySelectorAll('.film-info__release-date');
+main.addEventListener('click', function(evt) {
 
-favoritsFilter.addEventListener('click', function(evt) {
-    searchInput.value = "";
-    sortingBtns.forEach(button => {
-        button.classList.remove('button_checked')
-    });
-    if (evt.target.checked) {
-        filmList.classList.add('hidden');
-        favoritsFilmList.classList.add('active');
-    } else {
-        filmList.classList.remove('hidden');
-        favoritsFilmList.classList.remove('active');
+    if(evt.target === favoritsCheckBox) {
+        searchInput.value = '';
+        sortingBtns.forEach(button => {
+            button.classList.remove('button_checked');
+        });
+        renderFilmsList(filmsMockArr);
     }
-});
 
-sortingControlPanel.addEventListener('click', function(evt) {
-    if (evt.target.tagName === 'BUTTON') {
+    if(evt.target.closest('.button')) {
+
         sortingBtns.forEach(button => {
             evt.target.id === button.id ? button.classList.add('button_checked') : button.classList.remove('button_checked');
         });
 
-        let parentElement = favoritsCheckBox.checked ? favoritsFilmList : filmList;
-
         switch(evt.target.id) {
             case 'rating':
-                let sortByRatingList = Array.from(parentElement.children).sort((a, b) => {
-                    return  getRating(b) - getRating(a);
+                filmsMockArr.sort((a, b) => {
+                    return  Number(b.rating) - Number(a.rating);
                 });
-                sortByRatingList.forEach(item => {
-                    parentElement.appendChild(item);
-                })
-                function getRating(item) {
-                    return Number(item.querySelector('.film-info__rating > .film-info__text').textContent) || 0;
-                }
+                renderFilmsList(filmsMockArr);
             break;
             case 'releaseDate':
-                let sortByReleaseDateList = Array.from(parentElement.children).sort((a, b) => {
-                    return getRealeseDate(b) - getRealeseDate(a);
+                filmsMockArr.sort((a, b) => {
+                    return new Date(b.realeseDate.split('-').reverse().join(',')) - new Date(a.realeseDate.split('-').reverse().join(','));
                 });
-                sortByReleaseDateList.forEach(item => {
-                    parentElement.appendChild(item);
-                })
-                function getRealeseDate(item) {
-                    return new Date(item.querySelector('.film-info__release-date > .film-info__text').textContent.split('-').reverse().join(',')) || 0;
-                }
+                renderFilmsList(filmsMockArr);
             break;
             case 'boxOffice':
-                let sortByBudgetList = Array.from(parentElement.children).sort((a, b) => {
-                    return getBudget(b) - getBudget(a);
+                filmsMockArr.sort((a, b) => {
+                    return Number(b.budget.replace(/[^\d.]+/g, '')) - Number(a.budget.replace(/[^\d.]+/g, ''));
                 });
-                sortByBudgetList.forEach(item => {
-                    parentElement.appendChild(item);
-                })
-                function getBudget(item) {
-                    return Number(item.querySelector('.film-info__box-office > .film-info__text').textContent.replace(/[^\d.]+/g, '')) || 0;
-                }
+                renderFilmsList(filmsMockArr);
             break;
         }
     }
-});
 
-filmCards.forEach(filmCard => {
-    filmCard.addEventListener('click', function(evt) {
-        if (evt.target.closest('button')) {
-            evt.target.closest('button').classList.toggle('button_remove');
-            evt.target.closest('button').classList.toggle('button_add');
+    if(evt.target.closest('.button__icon')) {
 
-            if (evt.target.closest('button').classList.contains('button_remove')) {
-                favoritsFilmList.prepend(evt.currentTarget);
-            } else {filmList.append(evt.currentTarget);}
-        }
-    });
+        let tragetFilmId = evt.target.parentElement.closest('div[data-film-id]').getAttribute('data-film-id');
+
+        filmsMockArr.map((el, index) => {
+            if (index === Number(tragetFilmId)) {
+                favoritsCheckBox.checked ? el.isFavorite = false : el.isFavorite = true;
+            }
+        });
+
+        renderFilmsList(filmsMockArr);
+    }
 });

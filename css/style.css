@@ -38,7 +38,7 @@ body {
   background-color: #100e19;
 }
 
-.container {
+main {
   padding: 4rem 6rem;
   margin: 0 auto;
   max-width: 1440px;
@@ -64,18 +64,12 @@ h1 {
 /*
     film list
 */
-.film-list,
-.favorits-film-list.active {
+.film-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
   grid-gap: 0.75rem;
   justify-content: center;
 
-}
-
-.film-list.hidden,
-.favorits-film-list {
-  display: none;
 }
 
 /*
