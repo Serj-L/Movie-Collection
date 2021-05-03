@@ -53,10 +53,12 @@ const filmsPosters = [
 ];
 
 function getRandomNumber(array = 10) {
-const minNumber = 0;
-const maxNumber = Array.isArray(array) ? array.length : array;
-const randomNumber = Math.random() * (maxNumber - minNumber) + minNumber;
-return Array.isArray(array) ? Math.floor(Math.random() * (maxNumber - minNumber)) + minNumber : randomNumber.toFixed(1);
+    const minNumber = 0;
+    const maxNumber = Array.isArray(array) ? array.length : array;
+    const randomNumber = Math.random() * (maxNumber - minNumber) + minNumber;
+    return Array.isArray(array)
+    ? Math.floor(Math.random() * (maxNumber - minNumber)) + minNumber
+    : randomNumber.toFixed(1);
 };
 
 function getRandomBudget(min = 1555461, max = 987561784) {
@@ -85,21 +87,23 @@ function createRandomFilmCard() {
     return randomFilmCard;
 };
 
-const main = document.querySelector('main');
+const sortingControlPanel = document.querySelector('.sorting');
 const searchInput = document.querySelector('.search__input');
 const favoritsCheckBox = document.getElementById('favorite');
 const sortingBtns = document.querySelectorAll('.control-panel + .sorting > button');
 const templateFilmCard = document.getElementById('card-template').content.querySelector('.card');
 const filmsList = document.querySelector('.film-list');
-let filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard());
+const filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard());
+let filmsSearchArr = [];
+let filmsSortingkArr = [];
 
-function renderFilmsList(filmsMockArr) {
+function renderFilmsList(array) {
 
     while (filmsList.lastChild) {
         filmsList.removeChild(filmsList.lastChild);
     };
 
-    filmsMockArr.forEach(film => {
+    array.forEach(film => {
         const filmTitle = templateFilmCard.querySelector('.card-header__title');
         const filmPoster = templateFilmCard.querySelector('.card-header__image');
         const filmRating = templateFilmCard.querySelector('.film-info__rating .film-info__text');
@@ -116,70 +120,88 @@ function renderFilmsList(filmsMockArr) {
         filmDirector.innerText = film.director === null ? '-' : film.director;
         filmBudget.innerText = film.budget === null ? '$0' : film.budget;
         filmDescription.innerText = film.description === null ? '-' : film.description.length <= 140 ? film.description : film.description.slice(0,137) + '...';
-        templateFilmCard.dataset.filmId = filmsMockArr.indexOf(film);
+        templateFilmCard.dataset.filmId = array.indexOf(film);
 
         toFavoritsBtn.classList.toggle('button_add', !film.isFavorite);
         toFavoritsBtn.classList.toggle('button_remove', film.isFavorite);
 
         const currentFilmCard = templateFilmCard.cloneNode(true);
 
-        switch(film.isFavorite) {
-            case true:
-                if(favoritsCheckBox.checked) {
-                    filmsList.appendChild(currentFilmCard);
-                };
-            break;
-            case false:
-                if(!favoritsCheckBox.checked) {
-                    filmsList.appendChild(currentFilmCard);
-                };
-            break;
+        if(film.isFavorite === true && favoritsCheckBox.checked) {
+            filmsList.appendChild(currentFilmCard);
+        }
+
+        if(film.isFavorite === false && !favoritsCheckBox.checked) {
+            filmsList.appendChild(currentFilmCard);
         }
     });
 };
 
 renderFilmsList(filmsMockArr);
 
-main.addEventListener('click', function(evt) {
+function resetSorting(renderedFilmsArray) {
+    sortingBtns.forEach(button => {
+        button.classList.remove('button_checked');
+    });
+    renderFilmsList(renderedFilmsArray);
+}
 
-    if(evt.target === favoritsCheckBox) {
-        searchInput.value = '';
-        sortingBtns.forEach(button => {
-            button.classList.remove('button_checked');
-        });
+searchInput.addEventListener('input', function(evt) {
+
+    resetSorting(filmsMockArr)
+
+    if(evt.target.value.length > 0) {
+        let searchRequest = evt.target.value.toLowerCase();
+        filmsSearchArr = filmsMockArr.filter(el => el.title.toLowerCase().includes(searchRequest));
+        renderFilmsList(filmsSearchArr);
+    } else {
         renderFilmsList(filmsMockArr);
     }
+});
 
-    if(evt.target.closest('.button')) {
+favoritsCheckBox.addEventListener('click', function(evt) {
+    searchInput.value = '';
+    resetSorting(filmsMockArr);
+});
+
+sortingControlPanel.addEventListener('click', function(evt) {
+
+    if(evt.target.closest('button')) {
+
+        filmsSortingkArr = searchInput.value.length > 0 ? filmsSearchArr : [...filmsMockArr];
 
         sortingBtns.forEach(button => {
-            evt.target.id === button.id ? button.classList.add('button_checked') : button.classList.remove('button_checked');
+            evt.target.id === button.id
+            ? button.classList.add('button_checked')
+            : button.classList.remove('button_checked');
         });
 
         switch(evt.target.id) {
             case 'rating':
-                filmsMockArr.sort((a, b) => {
+                filmsSortingkArr.sort((a, b) => {
                     return  Number(b.rating) - Number(a.rating);
                 });
-                renderFilmsList(filmsMockArr);
+                renderFilmsList(filmsSortingkArr);
             break;
             case 'releaseDate':
-                filmsMockArr.sort((a, b) => {
+                filmsSortingkArr.sort((a, b) => {
                     return new Date(b.realeseDate.split('-').reverse().join(',')) - new Date(a.realeseDate.split('-').reverse().join(','));
                 });
-                renderFilmsList(filmsMockArr);
+                renderFilmsList(filmsSortingkArr);
             break;
             case 'boxOffice':
-                filmsMockArr.sort((a, b) => {
+                filmsSortingkArr.sort((a, b) => {
                     return Number(b.budget.replace(/[^\d.]+/g, '')) - Number(a.budget.replace(/[^\d.]+/g, ''));
                 });
-                renderFilmsList(filmsMockArr);
+                renderFilmsList(filmsSortingkArr);
             break;
         }
     }
+});
 
-    if(evt.target.closest('.button__icon')) {
+filmsList.addEventListener('click', function(evt) {
 
+    if(evt.target.closest('button')) {
         let tragetFilmId = evt.target.parentElement.closest('div[data-film-id]').getAttribute('data-film-id');
 
         filmsMockArr.map((el, index) => {
