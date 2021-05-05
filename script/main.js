@@ -103,7 +103,7 @@ function renderFilmsList(array) {
         filmsList.removeChild(filmsList.lastChild);
     };
 
-    array.forEach(film => {
+    array.forEach((film, index) => {
         const filmTitle = templateFilmCard.querySelector('.card-header__title');
         const filmPoster = templateFilmCard.querySelector('.card-header__image');
         const filmRating = templateFilmCard.querySelector('.film-info__rating .film-info__text');
@@ -120,7 +120,7 @@ function renderFilmsList(array) {
         filmDirector.innerText = film.director === null ? '-' : film.director;
         filmBudget.innerText = film.budget === null ? '$0' : film.budget;
         filmDescription.innerText = film.description === null ? '-' : film.description.length <= 140 ? film.description : film.description.slice(0,137) + '...';
-        templateFilmCard.dataset.filmId = array.indexOf(film);
+        templateFilmCard.dataset.filmId = index;
 
         toFavoritsBtn.classList.toggle('button_add', !film.isFavorite);
         toFavoritsBtn.classList.toggle('button_remove', film.isFavorite);
@@ -202,7 +202,7 @@ sortingControlPanel.addEventListener('click', function(evt) {
 filmsList.addEventListener('click', function(evt) {
 
     if(evt.target.closest('button')) {
-        let tragetFilmId = evt.target.parentElement.closest('div[data-film-id]').getAttribute('data-film-id');
+        let tragetFilmId = evt.target.parentElement.closest('div[data-film-id]').dataset.filmId;
 
         filmsMockArr.map((el, index) => {
             if (index === Number(tragetFilmId)) {
