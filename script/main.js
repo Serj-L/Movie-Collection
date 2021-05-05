@@ -95,7 +95,8 @@ const templateFilmCard = document.getElementById('card-template').content.queryS
 const filmsList = document.querySelector('.film-list');
 const filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard());
 let filmsSearchArr = [];
-let filmsSortingkArr = [];
+let filmsSortingArr = [];
+let tragetFilmId;
 
 function renderFilmsList(array) {
 
@@ -140,8 +141,18 @@ function renderFilmsList(array) {
 renderFilmsList(filmsMockArr);
 
 function resetSorting(renderedFilmsArray) {
+    sortingControlPanel.classList.remove('active');
     sortingBtns.forEach(button => {
         button.classList.remove('button_checked');
+    });
+    renderFilmsList(renderedFilmsArray);
+}
+
+function changeFlagIsFavorite(renderedFilmsArray) {
+    renderedFilmsArray.map((el, index) => {
+        if (index === Number(tragetFilmId)) {
+            el.isFavorite = !favoritsCheckBox.checked;
+        }
     });
     renderFilmsList(renderedFilmsArray);
 }
@@ -168,7 +179,9 @@ sortingControlPanel.addEventListener('click', function(evt) {
 
     if(evt.target.closest('button')) {
 
-        filmsSortingkArr = searchInput.value.length > 0 ? filmsSearchArr : [...filmsMockArr];
+        sortingControlPanel.classList.add('active');
+
+        filmsSortingArr = searchInput.value.length > 0 ? filmsSearchArr : [...filmsMockArr];
 
         sortingBtns.forEach(button => {
             evt.target.id === button.id
@@ -178,22 +191,22 @@ sortingControlPanel.addEventListener('click', function(evt) {
 
         switch(evt.target.id) {
             case 'rating':
-                filmsSortingkArr.sort((a, b) => {
+                filmsSortingArr.sort((a, b) => {
                     return  Number(b.rating) - Number(a.rating);
                 });
-                renderFilmsList(filmsSortingkArr);
+                renderFilmsList(filmsSortingArr);
             break;
             case 'releaseDate':
-                filmsSortingkArr.sort((a, b) => {
+                filmsSortingArr.sort((a, b) => {
                     return new Date(b.realeseDate.split('-').reverse().join(',')) - new Date(a.realeseDate.split('-').reverse().join(','));
                 });
-                renderFilmsList(filmsSortingkArr);
+                renderFilmsList(filmsSortingArr);
             break;
             case 'boxOffice':
-                filmsSortingkArr.sort((a, b) => {
+                filmsSortingArr.sort((a, b) => {
                     return Number(b.budget.replace(/[^\d.]+/g, '')) - Number(a.budget.replace(/[^\d.]+/g, ''));
                 });
-                renderFilmsList(filmsSortingkArr);
+                renderFilmsList(filmsSortingArr);
             break;
         }
     }
@@ -202,14 +215,14 @@ sortingControlPanel.addEventListener('click', function(evt) {
 filmsList.addEventListener('click', function(evt) {
 
     if(evt.target.closest('button')) {
-        let tragetFilmId = evt.target.parentElement.closest('div[data-film-id]').dataset.filmId;
+        tragetFilmId = evt.target.parentElement.closest('div[data-film-id]').dataset.filmId;
 
-        filmsMockArr.map((el, index) => {
-            if (index === Number(tragetFilmId)) {
-                el.isFavorite = !favoritsCheckBox.checked;
-            }
-        });
-
-        renderFilmsList(filmsMockArr);
+        if (sortingControlPanel.classList.contains('active')) {
+            changeFlagIsFavorite(filmsSortingArr);
+        } else if (searchInput.value !== '' && !sortingControlPanel.classList.contains('active')) {
+            changeFlagIsFavorite(filmsSearchArr);
+        } else {
+            changeFlagIsFavorite(filmsMockArr);
+        }
     }
 });
