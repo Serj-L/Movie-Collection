@@ -127,11 +127,11 @@ function renderFilmsList(array) {
 
         const currentFilmCard = templateFilmCard.cloneNode(true);
 
-        if(film.isFavorite === true && favoritsCheckBox.checked) {
+        if(film.isFavorite && favoritsCheckBox.checked) {
             filmsList.appendChild(currentFilmCard);
         }
 
-        if(film.isFavorite === false && !favoritsCheckBox.checked) {
+        if(!film.isFavorite && !favoritsCheckBox.checked) {
             filmsList.appendChild(currentFilmCard);
         }
     });
@@ -206,7 +206,7 @@ filmsList.addEventListener('click', function(evt) {
 
         filmsMockArr.map((el, index) => {
             if (index === Number(tragetFilmId)) {
-                favoritsCheckBox.checked ? el.isFavorite = false : el.isFavorite = true;
+                el.isFavorite = !favoritsCheckBox.checked;
             }
         });
 
