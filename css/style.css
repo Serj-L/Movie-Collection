@@ -35,13 +35,22 @@
 }
 
 body {
+  display: flex;
+  justify-content: center;
   background-color: #100e19;
 }
 
-main {
-  padding: 4rem 6rem;
-  margin: 0 auto;
+.container {
+  display: flex;
+  justify-content: center;
   max-width: 1440px;
+  flex-grow: 1;
+  background-color: #f0f0ea;
+}
+
+main {
+  flex-grow: 1;
+  padding: 4rem 6rem;
   color: #353535;
   font-family: "Roboto", "Arial", sans-serif;
   font-size: 16px;

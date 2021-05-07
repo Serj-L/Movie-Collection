@@ -9,28 +9,30 @@
     <title>Коллекция фильмов</title>
 </head>
 <body>
-    <main>
-        <header>
-            <h1>Коллекция фильмов</h1>
-        </header>
-        <div class="control-panel">
-            <div class="search">
-                <input class="search__input" type="text" placeholder="Поиск..." />
+    <div class="container">
+        <main>
+            <header>
+                <h1>Коллекция фильмов</h1>
+            </header>
+            <div class="control-panel">
+                <div class="search">
+                    <input class="search__input" type="text" placeholder="Поиск..." />
+                </div>
+                <div class="filter">
+                    <input class="filter__check" id="favorite" type="checkbox" >
+                    <label for="favorite">Показать Избранные</label>
+                </div>
             </div>
-            <div class="filter">
-                <input class="filter__check" id="favorite" type="checkbox" >
-                <label for="favorite">Показать Избранные</label>
+            <div class="control-panel sorting">
+                <h3 class="sorting__title">Сортировать по:</h3>
+                <button id="rating" class="button">Рейтингу</button>
+                <button id="releaseDate" class="button">Дате релиза</button>
+                <button id="boxOffice" class="button">Бюджету</button>
             </div>
-        </div>
-        <div class="control-panel sorting">
-            <h3 class="sorting__title">Сортировать по:</h3>
-            <button id="rating" class="button">Рейтингу</button>
-            <button id="releaseDate" class="button">Дате релиза</button>
-            <button id="boxOffice" class="button">Бюджету</button>
-        </div>
-        <div class="film-list">
-        </div>
-    </main>
+            <div class="film-list">
+            </div>
+        </main>
+    </div>
     <template id="card-template">
         <div class="card">
             <div class="card__header card-header">
@@ -68,6 +70,6 @@
             </div>
         </div>
     </template>
-<script src="./script/main.js"></script>
+    <script type="module" src="./script/main.js"></script>
 </body>
 </html>
