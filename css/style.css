@@ -49,6 +49,7 @@ main {
   min-height: 100vh;
 }
 
+
 fieldset {
   margin: 0;
   padding: 0;
@@ -127,6 +128,7 @@ grid-template: auto 1fr auto auto / 1fr;
   border-radius: 5px;
   transition: 0.2s;
   white-space: nowrap;
+  outline-color: #64588d;
 }
 
 .button:first-letter {
@@ -137,8 +139,7 @@ grid-template: auto 1fr auto auto / 1fr;
   margin-right: 5px;
 }
 
-.button:hover,
-.button:focus {
+.button:hover {
   border-color: #64588d;
 }
 
@@ -297,7 +298,7 @@ grid-template: auto 1fr auto auto / 1fr;
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 0;
   padding-left: 0;
 }
 
@@ -350,4 +351,36 @@ grid-template: auto 1fr auto auto / 1fr;
 
 .sorting__title {
   margin-right: 1.5rem;
+}
+
+/*
+  adaptive
+*/
+@media (max-width: 860px) {
+  main {
+    padding: 3rem 2rem;
+  }
+}
+@media (max-width: 699px) {
+  main {
+    padding: 2rem 1.2rem;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .filter {
+    padding: 1rem 0;
+  }
+}
+@media (max-width: 606px) {
+  .sorting {
+    flex-direction: column;
+  }
+}
+@media (max-width: 340px) {
+  main {
+    padding: 1.5rem 0.6rem;
+  }
 }
