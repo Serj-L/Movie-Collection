@@ -1,12 +1,9 @@
-import {createRandomFilmCard} from './mock.js';
-import {favoritsCheckBox} from './favorits.js';
+import {filmsList} from './main.js';
+import {getFavoritsStatus} from './favorits.js';
 
-const filmsList = document.querySelector('.film-list');
 const templateFilmCard = document.getElementById('card-template').content.querySelector('.card');
-const filmsMockArr = new Array(4).fill(null).map(filmCard => filmCard = createRandomFilmCard());
 
-
-function renderFilmsList(array) {
+export default function renderFilmsList(array) {
 
     while (filmsList.lastChild) {
         filmsList.removeChild(filmsList.lastChild);
@@ -36,19 +33,12 @@ function renderFilmsList(array) {
 
         const currentFilmCard = templateFilmCard.cloneNode(true);
 
-        if(film.isFavorite && favoritsCheckBox.checked) {
+        if(film.isFavorite && getFavoritsStatus()) {
             filmsList.appendChild(currentFilmCard);
         }
 
-        if(!film.isFavorite && !favoritsCheckBox.checked) {
+        if(!film.isFavorite && !getFavoritsStatus()) {
             filmsList.appendChild(currentFilmCard);
         }
     });
-};
-
-export {
-    favoritsCheckBox,
-    filmsList,
-    filmsMockArr,
-    renderFilmsList,
 };

@@ -1,14 +1,19 @@
+import { filmsList, filmsMockArr } from './main.js';
 import {compensateScrollbarWidth} from './utils.js';
-import { filmsList, filmsMockArr, renderFilmsList } from './render.js';
-import { searchInput, filmsSearchArr } from './search.js';
-import { sortingControlPanel, resetSorting, filmsSortingArr } from './sort.js';
+import renderFilmsList from './render.js';
+import { getSearchLength, resetSearching, filmsSearchArr } from './search.js';
+import { getSortingStatus, resetSorting, filmsSortingArr } from './sort.js';
 
 const favoritsCheckBox = document.getElementById('favorite');
 let tragetFilmId;
 
+function getFavoritsStatus() {
+    return favoritsCheckBox.checked;
+}
+
 function favoritCheckBoxHandler() {
     favoritsCheckBox.addEventListener('click', function(evt) {
-        searchInput.value = '';
+        resetSearching();
         resetSorting(filmsMockArr);
 
         compensateScrollbarWidth();
@@ -18,7 +23,7 @@ function favoritCheckBoxHandler() {
 function changeFlagIsFavorite(renderedFilmsArray) {
     renderedFilmsArray.map((el, index) => {
         if (index === Number(tragetFilmId)) {
-            el.isFavorite = !favoritsCheckBox.checked;
+            el.isFavorite = !getFavoritsStatus();
         }
     });
     renderFilmsList(renderedFilmsArray);
@@ -31,9 +36,9 @@ function filmListHandler() {
         if(evt.target.closest('button')) {
             tragetFilmId = evt.target.parentElement.closest('div[data-film-id]').dataset.filmId;
 
-            if (sortingControlPanel.classList.contains('active')) {
+            if (getSortingStatus()) {
                 changeFlagIsFavorite(filmsSortingArr);
-            } else if (searchInput.value.length > 0 && !sortingControlPanel.classList.contains('active')) {
+            } else if (getSearchLength() > 0 && !getSortingStatus()) {
                 changeFlagIsFavorite(filmsSearchArr);
             } else {
                 changeFlagIsFavorite(filmsMockArr);
@@ -47,7 +52,7 @@ function filmListHandler() {
 };
 
 export {
-    favoritsCheckBox,
+    getFavoritsStatus,
     favoritCheckBoxHandler,
     filmListHandler
 };

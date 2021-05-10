@@ -52,7 +52,7 @@ const filmsPosters = [
     'https://megaobzor.com/uploads/stories/66059/poster40965_1.jpg',
 ];
 
-export function createRandomFilmCard() {
+export default function createRandomFilmCard() {
     const randomFilmCard = {
         title: filmsTitles[getRandomNumber(filmsTitles)],
         poster: filmsPosters[getRandomNumber(filmsPosters)],

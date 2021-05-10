@@ -1,8 +1,17 @@
-import { filmsMockArr, renderFilmsList } from './render.js';
+import {filmsMockArr} from './main.js';
+import renderFilmsList from './render.js';
 import {resetSorting} from './sort.js';
 
 const searchInput = document.querySelector('.search__input');
 let filmsSearchArr = [];
+
+function resetSearching() {
+    searchInput.value = '';
+}
+
+function getSearchLength() {
+    return searchInput.value.length;
+}
 
 function searchInputHandler() {
     searchInput.addEventListener('input', function(evt) {
@@ -20,7 +29,8 @@ function searchInputHandler() {
 };
 
 export {
-    searchInput,
+    getSearchLength,
+    resetSearching,
     filmsSearchArr,
     searchInputHandler
 };

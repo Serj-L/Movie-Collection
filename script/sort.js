@@ -1,5 +1,6 @@
-import { filmsMockArr, renderFilmsList } from './render.js';
-import { searchInput, filmsSearchArr } from './search.js';
+import {filmsMockArr} from './main.js';
+import renderFilmsList from './render.js';
+import { getSearchLength, filmsSearchArr } from './search.js';
 
 const sortingBtns = document.querySelectorAll('.control-panel + .sorting > button');
 const sortingControlPanel = document.querySelector('.sorting');
@@ -14,17 +15,21 @@ function resetSorting(renderedFilmsArray) {
     renderFilmsList(renderedFilmsArray);
 };
 
+function getSortingStatus() {
+    return sortingControlPanel.classList.contains('active');
+}
+
 function sortingPanelHandler() {
     sortingControlPanel.addEventListener('click', function(evt) {
 
         if(evt.target.closest('button')) {
 
             if(evt.target.closest('button').classList.contains('button_checked')) {
-                searchInput.value.length > 0 ? resetSorting(filmsSearchArr) : resetSorting(filmsMockArr);
+                getSearchLength() > 0 ? resetSorting(filmsSearchArr) : resetSorting(filmsMockArr);
             } else {
                 sortingControlPanel.classList.add('active');
 
-                filmsSortingArr = searchInput.value.length > 0 ? [...filmsSearchArr] : [...filmsMockArr];
+                filmsSortingArr = getSearchLength() > 0 ? [...filmsSearchArr] : [...filmsMockArr];
 
                 sortingBtns.forEach(button => {
                     evt.target.id === button.id
@@ -58,8 +63,7 @@ function sortingPanelHandler() {
 };
 
 export {
-    sortingBtns,
-    sortingControlPanel,
+    getSortingStatus,
     filmsSortingArr,
     resetSorting,
     sortingPanelHandler
