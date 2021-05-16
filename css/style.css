@@ -35,48 +35,66 @@
 }
 
 body {
+  display: flex;
+  justify-content: center;
   background-color: #100e19;
 }
 
 .container {
-  padding: 4rem 7rem;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
   max-width: 1440px;
+  flex-grow: 1;
+  background-color: #f0f0ea;
+}
+
+main {
+  flex-grow: 1;
+  padding: 4rem 6rem;
   color: #353535;
   font-family: "Roboto", "Arial", sans-serif;
   font-size: 16px;
   background-color: #f0f0ea;
+  min-height: 100vh;
 }
+
 
 fieldset {
   margin: 0;
   padding: 0;
   border: 0;
 }
+
 h1 {
   font-size: 42px;
   margin: 0 0 2rem;
   text-align: center;
 }
+
 /*
     film list
 */
 .film-list {
   display: grid;
-  grid-row: 1;
-  grid-template-rows: auto;
-  grid-template-columns: auto auto auto auto;
-  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+  grid-gap: 0.75rem;
+  justify-content: center;
+
 }
 
 /*
     card
 */
 .card {
-  max-width: 300px;
+display: grid;
+grid-auto-flow: row;
+grid-template: auto 1fr auto auto / 1fr;
 }
 
 .card-header__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   color: #f0f0ea;
   background-color: #64588d;
@@ -87,6 +105,10 @@ h1 {
 .card__body {
   background-color: #fffff8;
   padding: 0.5rem 0.2rem;
+}
+
+.film-info__plot .film-info__text {
+  height: 170px;
 }
 
 .card__footer {
@@ -115,6 +137,7 @@ h1 {
   border-radius: 5px;
   transition: 0.2s;
   white-space: nowrap;
+  outline-color: #64588d;
 }
 
 .button:first-letter {
@@ -125,8 +148,7 @@ h1 {
   margin-right: 5px;
 }
 
-.button:hover,
-.button:focus {
+.button:hover {
   border-color: #64588d;
 }
 
@@ -285,7 +307,7 @@ h1 {
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 0;
   padding-left: 0;
 }
 
@@ -338,4 +360,36 @@ h1 {
 
 .sorting__title {
   margin-right: 1.5rem;
+}
+
+/*
+  adaptive
+*/
+@media (max-width: 860px) {
+  main {
+    padding: 3rem 2rem;
+  }
+}
+@media (max-width: 699px) {
+  main {
+    padding: 2rem 1.2rem;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .filter {
+    padding: 1rem 0;
+  }
+}
+@media (max-width: 606px) {
+  .sorting {
+    flex-direction: column;
+  }
+}
+@media (max-width: 340px) {
+  main {
+    padding: 1.5rem 0.6rem;
+  }
 }
