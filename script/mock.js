@@ -1,4 +1,4 @@
-import { getRandomNumber, getRandomDate, getRandomBudget } from './utils.js'
+import { getRandomNumber, getRandomDate, getRandomBudget, getFilmId } from './utils.js'
 
 const filmsTitles = [
     'Зеленая миля',
@@ -62,6 +62,7 @@ export default function createRandomFilmCard() {
         budget: `$${getRandomBudget()}`,
         description: filmsDescriptions[getRandomNumber(filmsDescriptions)],
         isFavorite: false,
+        filmId: getFilmId(),
     };
     return randomFilmCard;
 };

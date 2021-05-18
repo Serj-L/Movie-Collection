@@ -19,6 +19,13 @@ function getRandomDate(startDateStr = '1990, 1, 1', endDateStr = '2020, 11, 31')
     return `${`0${randomDate.getDate()}`.slice(-2)}-${`0${randomDate.getMonth() + 1}`.slice(-2)}-${randomDate.getFullYear()}`;
 };
 
+const getFilmId = ((startFrom) => {
+    let counter = 0;
+    return () => {
+        return startFrom + counter++;
+    }
+})(1);
+
 function getscrollbarWidth() {
     const outer = document.createElement('div');
 
@@ -50,5 +57,6 @@ export {
     getRandomNumber,
     getRandomBudget,
     getRandomDate,
-    compensateScrollbarWidth
+    getFilmId,
+    compensateScrollbarWidth,
 };

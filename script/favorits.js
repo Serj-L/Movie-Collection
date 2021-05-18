@@ -15,14 +15,22 @@ function favoritCheckBoxHandler() {
     favoritsCheckBox.addEventListener('click', function(evt) {
         resetSearching();
         resetSorting(filmsMockArr);
-
         compensateScrollbarWidth();
     });
 };
 
+function initialFlagIsFavorite(renderedFilmsArray, filmIdListFromLocalStorage) {
+    renderedFilmsArray.map(el => {
+        if (filmIdListFromLocalStorage.includes(el.filmId)) {
+            el.isFavorite = true;
+        }
+    });
+    renderFilmsList(renderedFilmsArray);
+};
+
 function changeFlagIsFavorite(renderedFilmsArray) {
-    renderedFilmsArray.map((el, index) => {
-        if (index === Number(tragetFilmId)) {
+    renderedFilmsArray.map(el => {
+        if (el.filmId === Number(tragetFilmId)) {
             el.isFavorite = !getFavoritsStatus();
         }
     });
@@ -51,8 +59,20 @@ function filmListHandler() {
     });
 };
 
+function getFavoritsFilmId(FilmsArray = filmsMockArr) {
+    let favoritsFilmIdList = [];
+    FilmsArray.forEach(el => {
+        if (el.isFavorite) {
+            favoritsFilmIdList.push(el.filmId);
+        }
+    });
+    return favoritsFilmIdList;
+}
+
 export {
     getFavoritsStatus,
     favoritCheckBoxHandler,
-    filmListHandler
+    filmListHandler,
+    initialFlagIsFavorite,
+    getFavoritsFilmId,
 };

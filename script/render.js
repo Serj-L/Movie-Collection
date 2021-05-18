@@ -9,7 +9,7 @@ export default function renderFilmsList(array) {
         filmsList.removeChild(filmsList.lastChild);
     };
 
-    array.forEach((film, index) => {
+    array.forEach(film => {
         const filmTitle = templateFilmCard.querySelector('.card-header__title');
         const filmPoster = templateFilmCard.querySelector('.card-header__image');
         const filmRating = templateFilmCard.querySelector('.film-info__rating .film-info__text');
@@ -26,7 +26,7 @@ export default function renderFilmsList(array) {
         filmDirector.innerText = film.director === null ? '-' : film.director;
         filmBudget.innerText = film.budget === null ? '$0' : film.budget;
         filmDescription.innerText = film.description === null ? '-' : film.description.length <= 140 ? film.description : film.description.slice(0,137) + '...';
-        templateFilmCard.dataset.filmId = index;
+        templateFilmCard.dataset.filmId = film.filmId;
 
         toFavoritsBtn.classList.toggle('button_add', !film.isFavorite);
         toFavoritsBtn.classList.toggle('button_remove', film.isFavorite);
