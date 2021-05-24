@@ -1,4 +1,4 @@
-import { filmsList, filmsMockArr } from './main.js';
+import { filmsList, filmsArr } from './main.js';
 import renderFilmsList from './render.js';
 import { getSearchLength, resetSearching, filmsSearchArr } from './search.js';
 import { getSortingStatus, resetSorting, filmsSortingArr } from './sort.js';
@@ -13,7 +13,7 @@ function getFavoritsStatus() {
 function favoritCheckBoxHandler() {
     favoritsCheckBox.addEventListener('click', function(evt) {
         resetSearching();
-        resetSorting(filmsMockArr);
+        resetSorting(filmsArr);
     });
 };
 
@@ -28,7 +28,7 @@ function initialFlagIsFavorite(renderedFilmsArray, filmIdListFromLocalStorage) {
 
 function changeFlagIsFavorite(renderedFilmsArray) {
     renderedFilmsArray.map(el => {
-        if (el.filmId === Number(tragetFilmId)) {
+        if (el.filmId === tragetFilmId) {
             el.isFavorite = !getFavoritsStatus();
         }
     });
@@ -47,13 +47,13 @@ function filmListHandler() {
             } else if (getSearchLength() > 0 && !getSortingStatus()) {
                 changeFlagIsFavorite(filmsSearchArr);
             } else {
-                changeFlagIsFavorite(filmsMockArr);
+                changeFlagIsFavorite(filmsArr);
             }
         }
     });
 };
 
-function getFavoritsFilmId(FilmsArray = filmsMockArr) {
+function getFavoritsFilmId(FilmsArray = filmsArr) {
     let favoritsFilmIdList = [];
     FilmsArray.forEach(el => {
         if (el.isFavorite) {

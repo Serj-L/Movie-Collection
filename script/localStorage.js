@@ -7,11 +7,11 @@ function windowOnCloseHandler() {
         localStorage.setItem('FavoritsFilmsId', JSON.stringify(getFavoritsFilmId()));
         return '';
     };
-}
+};
 
 function getFilmIdFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('FavoritsFilmsId'))
-}
+    return JSON.parse(localStorage.getItem('FavoritsFilmsId'));
+};
 
 export {
     windowOnCloseHandler,
