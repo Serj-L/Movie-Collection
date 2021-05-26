@@ -1,6 +1,7 @@
 const spinner = document.querySelector('.spinner');
 const url = 'https://fe08-films.herokuapp.com';
 const filmsData = await getFilmsData(url);
+export const filmsArr = getFilms();
 
 async function getAccessToken(url) {
     try {
@@ -34,23 +35,19 @@ async function getFilmsData(url) {
     };
 };
 
-export default function createFilmsArr() {
-    const filmsArr = [];
-    filmsData.forEach (film => {
-        const filmCard = {};
-        if(!film.Error) {
-            filmCard.title = film.Title;
-            filmCard.poster = film.Poster;
-            filmCard.rating = film.imdbRating;
-            filmCard.realeseDate = film.Released;
-            filmCard.director = film.Director;
-            filmCard.budget = film.BoxOffice;
-            filmCard.description = film.Plot;
-            filmCard.isFavorite = false,
-            filmCard.filmId = film.imdbID;
-
-            filmsArr.push(filmCard);
-        };
+function getFilms() {
+    let filmsArr = filmsData.filter(film => !film.Error).map(film => {
+        return film = {
+            title: film.Title,
+            poster: film.Poster,
+            rating: film.imdbRating,
+            realeseDate: film.Released,
+            director: film.Director,
+            budget: film.BoxOffice,
+            description: film.Plot,
+            isFavorite: false,
+            filmId: film.imdbID,
+        }
     });
     return filmsArr;
 };

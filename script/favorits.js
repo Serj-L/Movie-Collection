@@ -1,8 +1,9 @@
-import { filmsList, filmsArr } from './main.js';
+import {filmsArr} from './fetch.js';
 import renderFilmsList from './render.js';
 import { getSearchLength, resetSearching, filmsSearchArr } from './search.js';
 import { getSortingStatus, resetSorting, filmsSortingArr } from './sort.js';
 
+const filmsList = document.querySelector('.film-list');
 const favoritsCheckBox = document.getElementById('favorite');
 let tragetFilmId;
 
@@ -69,4 +70,5 @@ export {
     filmListHandler,
     initialFlagIsFavorite,
     getFavoritsFilmId,
+    filmsList
 };

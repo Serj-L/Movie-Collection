@@ -1,8 +1,8 @@
-import {filmsList} from './main.js';
 import compensateScrollbarWidth from './utils.js';
-import {getFavoritsStatus} from './favorits.js';
+import { getFavoritsStatus, filmsList } from './favorits.js';
 
 const templateFilmCard = document.getElementById('card-template').content.querySelector('.card');
+
 
 export default function renderFilmsList(array) {
 

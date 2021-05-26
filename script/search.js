@@ -1,4 +1,4 @@
-import {filmsArr} from './main.js';
+import {filmsArr} from './fetch.js';
 import renderFilmsList from './render.js';
 import {resetSorting} from './sort.js';
 
