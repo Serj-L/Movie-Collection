@@ -1,4 +1,4 @@
-import {filmsMockArr} from './main.js';
+import {filmsArr} from './fetch.js';
 import renderFilmsList from './render.js';
 import {resetSorting} from './sort.js';
 
@@ -16,14 +16,14 @@ function getSearchLength() {
 function searchInputHandler() {
     searchInput.addEventListener('input', function(evt) {
 
-        resetSorting(filmsMockArr)
+        resetSorting(filmsArr)
 
         if(evt.target.value.length > 0) {
             let searchRequest = evt.target.value.toLowerCase();
-            filmsSearchArr = filmsMockArr.filter(el => el.title.toLowerCase().includes(searchRequest));
+            filmsSearchArr = filmsArr.filter(el => el.title.toLowerCase().includes(searchRequest));
             renderFilmsList(filmsSearchArr);
         } else {
-            renderFilmsList(filmsMockArr);
+            renderFilmsList(filmsArr);
         }
     });
 };

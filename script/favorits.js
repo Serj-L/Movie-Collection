@@ -1,9 +1,9 @@
-import { filmsList, filmsMockArr } from './main.js';
-import {compensateScrollbarWidth} from './utils.js';
+import {filmsArr} from './fetch.js';
 import renderFilmsList from './render.js';
 import { getSearchLength, resetSearching, filmsSearchArr } from './search.js';
 import { getSortingStatus, resetSorting, filmsSortingArr } from './sort.js';
 
+const filmsList = document.querySelector('.film-list');
 const favoritsCheckBox = document.getElementById('favorite');
 let tragetFilmId;
 
@@ -14,15 +14,22 @@ function getFavoritsStatus() {
 function favoritCheckBoxHandler() {
     favoritsCheckBox.addEventListener('click', function(evt) {
         resetSearching();
-        resetSorting(filmsMockArr);
-
-        compensateScrollbarWidth();
+        resetSorting(filmsArr);
     });
 };
 
+function initialFlagIsFavorite(renderedFilmsArray, filmIdListFromLocalStorage) {
+    renderedFilmsArray.map(el => {
+        if (filmIdListFromLocalStorage.includes(el.filmId)) {
+            el.isFavorite = true;
+        }
+    });
+    renderFilmsList(renderedFilmsArray);
+};
+
 function changeFlagIsFavorite(renderedFilmsArray) {
-    renderedFilmsArray.map((el, index) => {
-        if (index === Number(tragetFilmId)) {
+    renderedFilmsArray.map(el => {
+        if (el.filmId === tragetFilmId) {
             el.isFavorite = !getFavoritsStatus();
         }
     });
@@ -41,18 +48,27 @@ function filmListHandler() {
             } else if (getSearchLength() > 0 && !getSortingStatus()) {
                 changeFlagIsFavorite(filmsSearchArr);
             } else {
-                changeFlagIsFavorite(filmsMockArr);
-            }
-
-            if(!filmsList.hasChildNodes()) {
-                compensateScrollbarWidth();
+                changeFlagIsFavorite(filmsArr);
             }
         }
     });
 };
 
+function getFavoritsFilmId(FilmsArray = filmsArr) {
+    let favoritsFilmIdList = [];
+    FilmsArray.forEach(el => {
+        if (el.isFavorite) {
+            favoritsFilmIdList.push(el.filmId);
+        }
+    });
+    return favoritsFilmIdList;
+}
+
 export {
     getFavoritsStatus,
     favoritCheckBoxHandler,
-    filmListHandler
+    filmListHandler,
+    initialFlagIsFavorite,
+    getFavoritsFilmId,
+    filmsList
 };

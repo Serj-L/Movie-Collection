@@ -1,4 +1,4 @@
-import {filmsMockArr} from './main.js';
+import {filmsArr} from './fetch.js';
 import renderFilmsList from './render.js';
 import { getSearchLength, filmsSearchArr } from './search.js';
 
@@ -25,11 +25,11 @@ function sortingPanelHandler() {
         if(evt.target.closest('button')) {
 
             if(evt.target.closest('button').classList.contains('button_checked')) {
-                getSearchLength() > 0 ? resetSorting(filmsSearchArr) : resetSorting(filmsMockArr);
+                getSearchLength() > 0 ? resetSorting(filmsSearchArr) : resetSorting(filmsArr);
             } else {
                 sortingControlPanel.classList.add('active');
 
-                filmsSortingArr = getSearchLength() > 0 ? [...filmsSearchArr] : [...filmsMockArr];
+                filmsSortingArr = getSearchLength() > 0 ? [...filmsSearchArr] : [...filmsArr];
 
                 sortingBtns.forEach(button => {
                     evt.target.id === button.id
