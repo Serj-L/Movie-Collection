@@ -1,4 +1,4 @@
-**[ОТКРЫТЬ ПРОЕКТ](https://serj-l.github.io/Project-Lepnyakov-Sergey/index.html)**
+**[ОТКРЫТЬ ПРОЕКТ](https://serj-l.github.io/Movie-Collection/index.html)**
 # Проект коллекция фильмов
 Техническое задание на google doc **[ТУТ](https://drive.google.com/file/d/1dT5wydwjCWO9kMFh_yoxTmJW72ogoweg/view?usp=sharing)**.
 ## Техническое задание
